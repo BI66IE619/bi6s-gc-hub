@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Classroom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', 'Google Sans', Arial, sans-serif;
+      background: #f8f9fa;
+      color: #3c4043;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 1px solid #dadce0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 8px;
+    }
+
+    .title {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 22px;
+      color: #5f6368;
+      font-weight: 400;
+    }
+
+    .cursor {
+      animation: blink 1s step-end infinite;
+      color: #1967d2;
+      font-weight: 300;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    /* Body Layout */
+    .body-wrapper {
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 72px;
+      background: #ffffff;
+      border-right: 1px solid #dadce0;
+      padding: 8px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+    }
+
+    .sidebar-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .sidebar-btn:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .sidebar-active {
+      background: #e8f0fe !important;
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Class Cards */
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      height: 100px;
+      padding: 16px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-header.brown { background: linear-gradient(135deg, #d4954a 0%, #a67535 100%); }
+    .card-header.teal { background: linear-gradient(135deg, #26a69a 0%, #137a7f 100%); }
+    .card-header.coral { background: linear-gradient(135deg, #f5a88e 0%, #e07d5f 100%); }
+    .card-header.green-teal { background: linear-gradient(135deg, #1e8e87 0%, #0d5c5f 100%); }
+    .card-header.cyan { background: linear-gradient(135deg, #2d9d96 0%, #137a7f 100%); }
+    .card-header.gold { background: linear-gradient(135deg, #d4b044 0%, #b8941f 100%); }
+
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .card-section {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2px;
+    }
+
+    .card-teacher {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .card-avatar {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 400;
+      position: absolute;
+      right: 16px;
+      bottom: -30px;
+      border: 3px solid white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .card-avatar.blue { background: #1a73e8; }
+    .card-avatar.green { background: #34a853; }
+
+    .card-body {
+      flex: 1;
+      min-height: 100px;
+      padding: 16px;
+      padding-top: 40px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 8px 16px;
+      border-top: 1px solid #dadce0;
+      gap: 8px;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .card-icon:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed;
+      bottom: 8px;
+      right: 8px;
+    }
+
+    .version {
+      font-size: 9px;
+      color: #80868b;
+      opacity: 0.3;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: opacity 0.2s;
+    }
+
+    .version:hover {
+      opacity: 0.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        padding: 16px;
+      }
+      .container {
+        grid-template-columns: 1fr;
+      }
+      .title {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+        </svg>
+      </button>
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 24 24">
+          <path fill="#0F9D58" d="M1.637 1.637h9.273v9.273H1.637z"/>
+          <path fill="#FBBC05" d="M1.637 13.09h9.273v9.273H1.637z"/>
+          <path fill="#1967D2" d="M13.09 1.637h9.273v9.273H13.09z"/>
+          <path fill="#EA4335" d="M13.09 13.09h9.273v9.273H13.09z"/>
+          <path fill="#1967D2" d="M6.273 6.273h11.454v11.454H6.273z"/>
+          <rect fill="#fff" x="8" y="10" width="8" height="1.5" rx="0.75"/>
+          <rect fill="#fff" x="8" y="12.5" width="5" height="1.5" rx="0.75"/>
+        </svg>
+        <span class="title" id="typewriter"></span><span class="cursor">|</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <button class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+      </button>
+      <button class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M6 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM6 14c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM6 20c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+        </svg>
+      </button>
+      <div class="avatar">B</div>
+    </div>
+  </nav>
+
+  <div class="body-wrapper">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar-btn sidebar-active">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1967d2">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </button>
+      <button class="sidebar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+        </svg>
+      </button>
+      <button class="sidebar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+        </svg>
+      </button>
+      <button class="sidebar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+        </svg>
+      </button>
+      <button class="sidebar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+          <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <div class="container" id="cards-container"></div>
+    </main>
+  </div>
+
+  <!-- Hidden Footer Link -->
+  <footer class="footer">
+    <button onclick="openInAboutBlank()" class="version">v10.0.6</button>
+  </footer>
+
+  <script>
+    // Class Data
+    const classData = [
+      { name: "Physics 106", section: "Period 3", teacher: "Mr. Bi6", link: "g.html", headerClass: "brown", avatarClass: "blue" },
+      { name: "Computer Science", section: "2nd Period", teacher: "Mr. Bi6", link: "a.html", headerClass: "teal", avatarClass: "blue" },
+      { name: "Media Literacy", section: "Period 1 - Semester 2", teacher: "Mr. Bi6", link: "https://net20.cc/home", headerClass: "coral", avatarClass: "green" },
+      { name: "Audio Engineering", section: "Per 5 & 6 - Room 308", teacher: "Mr. Bi6", link: "https://bi6music.netlify.app", headerClass: "green-teal", avatarClass: "blue" },
+      { name: "Social Comms", section: "2025/26 - Room 308", teacher: "Mr. Bi6", link: "disremake.html", headerClass: "cyan", avatarClass: "blue" },
+      { name: "Network Security", section: "Period 3", teacher: "Mr. Bi6", link: "404.html", headerClass: "gold", avatarClass: "blue" }
+    ];
+
+    // Render Cards
+    const container = document.getElementById('cards-container');
+    classData.forEach(cls => {
+      const card = document.createElement('a');
+      card.href = cls.link;
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-header ${cls.headerClass}">
+          <div class="card-info">
+            <h2 class="card-title">${cls.name}</h2>
+            <p class="card-section">${cls.section}</p>
+            <p class="card-teacher">${cls.teacher}</p>
+          </div>
+          <div class="card-avatar ${cls.avatarClass}">B</div>
+        </div>
+        <div class="card-body"></div>
+        <div class="card-footer">
+          <button class="card-icon" onclick="event.preventDefault()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+              <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+            </svg>
+          </button>
+          <button class="card-icon" onclick="event.preventDefault()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+              <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+            </svg>
+          </button>
+          <button class="card-icon" onclick="event.preventDefault()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368">
+              <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Typewriter Effect
+    const text = "Classroom";
+    let index = 0;
+    const typewriter = document.getElementById('typewriter');
+    
+    function type() {
+      if (index <= text.length) {
+        typewriter.textContent = text.slice(0, index);
+        index++;
+        setTimeout(type, 100);
+      }
+    }
+    type();
+
+    // About Blank Script
+    function openInAboutBlank() {
+      const win = window.open("about:blank", "_blank");
+      if (win) {
+        win.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head><title>Document</title></head>
+          <body style="margin:0;overflow:hidden;">
+            <iframe src="${window.location.href}" style="width:100%;height:100vh;border:none;"></iframe>
+          </body>
+          </html>
+        `);
+        win.document.close();
+      }
+    }
+
+    // Firebase Config (placeholder - add your config here)
+    // const firebaseConfig = {
+    //   apiKey: "YOUR_API_KEY",
+    //   authDomain: "YOUR_AUTH_DOMAIN",
+    //   projectId: "YOUR_PROJECT_ID",
+    //   storageBucket: "YOUR_STORAGE_BUCKET",
+    //   messagingSenderId: "YOUR_SENDER_ID",
+    //   appId: "YOUR_APP_ID"
+    // };
+  </script>
+</body>
+</html>
