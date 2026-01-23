@@ -27,37 +27,39 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      perspective: 1000px;
     }
 
-    /* 1. Logo Pop-Up Animation */
+    /* Snappier Logo Pop-Up */
     .logo-container {
       margin-bottom: 40px;
       opacity: 0;
-      transform: scale(0.4) translateY(20px);
-      /* Uses an elastic bezier for that "pop" effect */
-      animation: logoPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      transform: scale(0.6) translateY(10px);
+      /* Reduced duration from 0.8s to 0.4s */
+      animation: logoPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .logo-container img {
+      width: 110px;
+      height: auto;
+      display: block;
     }
 
     @keyframes logoPop {
-      0% { opacity: 0; transform: scale(0.4) translateY(20px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* 2. Loading UI Fade-In (Delayed) */
+    /* Fast UI Fade-In */
     .loading-ui {
       opacity: 0;
-      transform: translateY(10px);
-      /* Starts after the logo has mostly popped in */
-      animation: uiFadeIn 0.6s ease-out forwards 0.5s;
+      animation: uiFadeIn 0.3s ease-out forwards 0.2s;
     }
 
     @keyframes uiFadeIn {
-      to { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; }
     }
 
     .loader-wrapper {
-      width: 260px;
+      width: 240px;
       height: 4px;
       background-color: #f1f3f4;
       border-radius: 10px;
@@ -70,24 +72,25 @@
       height: 100%;
       background: #1a73e8;
       border-radius: 10px;
-      transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      /* Reduced from 3s to 1.2s for a faster feel */
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); 
     }
 
     .loading-text {
-      margin-top: 18px;
+      margin-top: 16px;
       color: #5f6368;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
 
-    /* Smooth Exit Animation */
+    /* Fast Exit Animation */
     .fade-out {
-      animation: finishExit 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
+      animation: finishExit 0.3s ease-in forwards;
     }
 
     @keyframes finishExit {
-      to { opacity: 0; transform: scale(1.1); filter: blur(10px); }
+      to { opacity: 0; transform: scale(1.05); filter: blur(5px); }
     }
   </style>
 </head>
@@ -95,55 +98,35 @@
 
   <div class="splash-container" id="splash">
     <div class="logo-container">
-      <svg width="110" height="110" viewBox="0 0 24 24">
-        <path fill="#0F9D58" d="M1.637 1.637h9.273v9.273H1.637z"/>
-        <path fill="#FBBC05" d="M1.637 13.09h9.273v9.273H1.637z"/>
-        <path fill="#1967D2" d="M13.09 1.637h9.273v9.273H13.09z"/>
-        <path fill="#EA4335" d="M13.09 13.09h9.273v9.273H13.09z"/>
-        <path fill="#1967D2" d="M6.273 6.273h11.454v11.454H6.273z"/>
-        <rect fill="#fff" x="8" y="10" width="8" height="1.5" rx="0.75"/>
-        <rect fill="#fff" x="8" y="12.5" width="5" height="1.5" rx="0.75"/>
-      </svg>
+      <img src="https://files.catbox.moe/3j0ed4.png" alt="Google Classroom">
     </div>
 
     <div class="loading-ui">
       <div class="loader-wrapper">
         <div class="loader-bar" id="progress"></div>
       </div>
-      <p class="loading-text">Google Classroom</p>
+      <p class="loading-text">Loading...</p>
     </div>
   </div>
 
   <script>
     const progressBar = document.getElementById('progress');
     const splash = document.getElementById('splash');
-    let progress = 0;
 
-    function startLoading() {
-      const interval = setInterval(() => {
-        // Organic loading steps
-        progress += Math.floor(Math.random() * 15) + 5;
+    window.onload = () => {
+      // Start almost immediately
+      setTimeout(() => {
+        progressBar.style.width = '100%';
         
-        if (progress >= 100) {
-          progress = 100;
-          progressBar.style.width = '100%';
-          clearInterval(interval);
-          
-          // Exit sequence
+        // Match the 1.2s transition time
+        setTimeout(() => {
+          splash.classList.add('fade-out');
           setTimeout(() => {
-            splash.classList.add('fade-out');
-            setTimeout(() => {
-              window.location.href = 'main.html'; 
-            }, 500);
-          }, 400);
-        } else {
-          progressBar.style.width = progress + '%';
-        }
-      }, 250);
-    }
-
-    // Start loading only after the entrance animations are visible
-    setTimeout(startLoading, 1000);
+            window.location.href = 'classroom.html'; 
+          }, 300);
+        }, 1300); 
+      }, 300);
+    };
   </script>
 </body>
 </html>
