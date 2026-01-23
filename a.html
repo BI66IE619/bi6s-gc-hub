@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acc Biology - (2026)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', 'Google Sans', Arial, sans-serif;
+      background: #f8f9fa;
+      color: #3c4043;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 64px;
+      background: #ffffff;
+      border-bottom: 1px solid #dadce0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-left: 8px;
+    }
+    
+    .logo-link {
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 4px 6px;
+      transition: background 0.2s;
+    }
+
+    .logo-link:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-title {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 22px;
+      color: #5f6368;
+      font-weight: 400;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: 16px;
+    }
+
+    .breadcrumb-arrow {
+      color: #5f6368;
+      font-size: 18px;
+    }
+
+    .breadcrumb-class {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 16px;
+      color: #3c4043;
+    }
+
+    .breadcrumb-section {
+      font-size: 12px;
+      color: #5f6368;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 8px;
+      cursor: pointer;
+    }
+
+    .body-wrapper {
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 72px;
+      background: #ffffff;
+      border-right: 1px solid #dadce0;
+      padding: 8px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+    }
+
+    .sidebar-btn {
+      width: 48px;
+      height: 48px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .sidebar-btn:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+
+    /* Main Content Area */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0;
+      background: #fff;
+      padding: 0 24px;
+      border-bottom: 1px solid #dadce0;
+    }
+
+    .tab {
+      padding: 16px 24px;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 14px;
+      color: #5f6368;
+      cursor: pointer;
+      border: none;
+      background: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+
+    .tab:hover { color: #1967d2; }
+    .tab.active { color: #1967d2; }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #1967d2;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #d4954a 0%, #a67535 100%);
+      border-radius: 8px;
+      padding: 24px 32px;
+      margin-bottom: 24px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    }
+
+    .hero-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 36px;
+      color: white;
+      font-weight: 400;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      margin-bottom: 4px;
+    }
+
+    .hero-section {
+      font-size: 16px;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Layout Grid */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    .sidebar-card {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid #dadce0;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-card-title {
+      font-family: 'Google Sans', sans-serif;
+      font-size: 16px;
+      color: #3c4043;
+      margin-bottom: 12px;
+    }
+
+    .upcoming-empty { font-size: 14px; color: #5f6368; margin-bottom: 12px; }
+    .view-all { color: #1967d2; font-size: 14px; font-weight: 500; cursor: pointer; }
+
+    /* Stream Content */
+    .stream {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ========================================== */
+    /* FIXED ANNOUNCEMENT BUTTON (MATCHES IMAGE)  */
+    /* ========================================== */
+    .new-announcement {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #e1f1ff; /* Light blue background from image */
+      border: none;
+      color: #004a77; /* Darker blue text */
+      padding: 12px 24px;
+      border-radius: 50px; /* Pill shape */
+      font-family: 'Google Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 16px;
+      width: fit-content;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .new-announcement:hover {
+      background: #d0e7ff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .new-announcement svg {
+      fill: #004a77;
+    }
+
+    /* ========================================== */
+    /* ANNOUNCEMENT CARD STYLE */
+    /* ========================================== */
+    .announcement-card {
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .announcement-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .teacher-photo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #1967d2;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .header-info {
+      flex: 1;
+    }
+
+    .teacher-name-ann {
+      font-size: 14px;
+      font-weight: 500;
+      color: #3c4043;
+      display: block;
+    }
+
+    .announcement-date {
+      font-size: 12px;
+      color: #70757a;
+    }
+
+    .announcement-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #3c4043;
+      padding: 0 4px;
+      margin-bottom: 16px;
+      white-space: pre-wrap;
+    }
+
+    .announcement-footer {
+      border-top: 1px solid #e8eaed;
+      padding-top: 12px;
+      margin-top: 8px;
+    }
+
+    .add-comment-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #1967d2;
+      font-size: 14px;
+      font-weight: 500;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ========================================== */
+    /* GAME CARD SYSTEM */
+    /* ========================================== */
+    .rectangle-container {
+      width: 100%;
+    }
+
+    .rectangle {
+      background: #fff;
+      border: 1px solid #dadce0;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+
+    .rectangle:hover {
+      box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+      border-color: transparent;
+    }
+
+    .rectangle img {
+      display: none !important;
+    }
+
+    .rectangle::before {
+      content: '';
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #f9ab00; 
+      background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: center;
+      flex-shrink: 0;
+    }
+
+    .game-name {
+      font-size: 14px;
+      color: #3c4043;
+      font-weight: 500;
+      flex: 1;
+      text-transform: capitalize;
+    }
+
+    .game-name::before {
+      content: "Mr. Bons posted a new assignment: ";
+      font-weight: 400;
+      color: #5f6368;
+    }
+
+    .rectangle::after {
+      content: '⋮';
+      font-size: 20px;
+      color: #5f6368;
+      margin-left: auto;
+      padding: 0 10px;
+    }
+
+    .footer { position: fixed; bottom: 8px; right: 8px; }
+    .version { font-size: 9px; color: #80868b; opacity: 0.3; background: none; border: none; cursor: pointer; padding: 4px 8px; transition: opacity 0.2s; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <button class="icon-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+      </button>
+      <a href="index.html" class="logo logo-link">
+        <svg width="32" height="32" viewBox="0 0 24 24">
+          <path fill="#0F9D58" d="M1.637 1.637h9.273v9.273H1.637z"/><path fill="#FBBC05" d="M1.637 13.09h9.273v9.273H1.637z"/><path fill="#1967D2" d="M13.09 1.637h9.273v9.273H13.09z"/><path fill="#EA4335" d="M13.09 13.09h9.273v9.273H13.09z"/><path fill="#1967D2" d="M6.273 6.273h11.454v11.454H6.273z"/><rect fill="#fff" x="8" y="10" width="8" height="1.5" rx="0.75"/><rect fill="#fff" x="8" y="12.5" width="5" height="1.5" rx="0.75"/>
+        </svg>
+        <span class="nav-title">Classroom</span>
+      </a>
+      <div class="breadcrumb">
+        <span class="breadcrumb-arrow">›</span>
+        <div><div class="breadcrumb-class">Acc Biology - (2026</div><div class="breadcrumb-section">2nd Period</div></div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <div class="avatar">B</div>
+    </div>
+  </nav>
+
+  <div class="body-wrapper">
+    <aside class="sidebar">
+      <a href="classroom.html" class="sidebar-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="#5f6368"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>
+    </aside>
+
+    <main class="main">
+      <div class="tabs">
+        <button class="tab active">Stream</button>
+        <button class="tab">Classwork</button>
+        <button class="tab">People</button>
+      </div>
+
+      <div class="content">
+        <div class="hero">
+          <h1 class="hero-title">2025-2026 AP HUMAN GEO</h1>
+          <p class="hero-section">Period 3</p>
+        </div>
+
+        <div class="main-grid">
+          <div class="sidebar-cards">
+            <div class="sidebar-card">
+              <h3 class="sidebar-card-title">Upcoming</h3>
+              <p class="upcoming-empty">Woohoo, no work due soon!</p>
+              <span class="view-all">View all</span>
+            </div>
+          </div>
+
+          <div class="stream">
+            <button class="new-announcement">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
+              New announcement
+            </button>
+
+            <div class="announcement-card">
+              <div class="announcement-header">
+                <div class="teacher-photo">B</div>
+                <div class="header-info">
+                  <span class="teacher-name-ann">Mr. Bons</span>
+                  <span class="announcement-date">Nov 9, 2025</span>
+                </div>
+                <div style="color: #5f6368; cursor: pointer;">⋮</div>
+              </div>
+              <div class="announcement-text">Good evening... just wanted to let you know that I have posted the new assignments for the week. Please ensure you complete the Slope Game and Retro Bowl by Friday. Thank you and see you tomorrow.</div>
+              <div class="announcement-footer">
+                <button class="add-comment-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM4 4h16v12H5.17L4 17.17V4z"/></svg>
+                  Add class comment
+                </button>
+              </div>
+            </div>
+
+            <div class="rectangle-container">
+                    <div class="rectangle" data-category="placeholder" onclick="window.location.href='/a/emulatorjs/index.html.html'">
+                        <img src="https://files.catbox.moe/35jhlf.png" alt="emulatorjs">
+                        <div class="game-name">EmulatorJS</div>
+                    </div>
+                </div>
+                
+                <div class="rectangle-container">
+                    <div class="rectangle" data-category="placeholder" onclick="window.location.href='/a/etchasketch/index.html'">
+                        <img src="/a/assets/etchasketch.png" alt="etchasketch">
+                        <div class="game-name">EtchASketch</div>
+                    </div>
+                </div>
+
+                <div class="rectangle-container">
+                    <div class="rectangle" data-category="placeholder" onclick="window.location.href='/a/fluidsim/index.html'">
+                        <img src="https://files.catbox.moe/9ccgcg.jpg" alt="fluidsim">
+                        <div class="game-name">FluidSimulator</div>
+                    </div>
+                </div>
+
+                <div class="rectangle-container">
+                    <div class="rectangle" data-category="placeholder" onclick="window.location.href='/a/godoblocks/index.html'">
+                        <img src="https://files.catbox.moe/iyav1n.jpg" alt="godoblocks">
+                        <div class="game-name">GoDoBlocks</div>
+                    </div>
+                </div>
+
+                <div class="rectangle-container">
+                    <div class="rectangle" data-category="placeholder" onclick="window.location.href='/e.html'">
+                        <img src="/a/assets/exploits.png" alt="exploits">
+                        <div class="game-name">Exploits</div>
+                    </div>
+                </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer"><button class="version">v10.0.6</button></footer>
+</body>
+</html>
