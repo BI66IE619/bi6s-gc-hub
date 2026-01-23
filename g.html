@@ -276,25 +276,39 @@
       gap: 12px;
     }
 
+    /* ========================================== */
+    /* FIXED ANNOUNCEMENT BUTTON (MATCHES IMAGE)  */
+    /* ========================================== */
     .new-announcement {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: #fff;
-      border: 1px solid #dadce0;
-      color: #5f6368;
-      padding: 10px 24px;
-      border-radius: 8px;
+      gap: 12px;
+      background: #e1f1ff; /* Light blue background from image */
+      border: none;
+      color: #004a77; /* Darker blue text */
+      padding: 12px 24px;
+      border-radius: 50px; /* Pill shape */
       font-family: 'Google Sans', sans-serif;
       font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
-      margin-bottom: 12px;
-      width: 100%;
-      transition: background 0.2s;
+      margin-bottom: 16px;
+      width: fit-content;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .new-announcement:hover {
+      background: #d0e7ff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .new-announcement svg {
+      fill: #004a77;
     }
 
     /* ========================================== */
-    /* NEW ANNOUNCEMENT CARD STYLE */
+    /* ANNOUNCEMENT CARD STYLE */
     /* ========================================== */
     .announcement-card {
       background: #fff;
@@ -370,9 +384,8 @@
     }
 
     /* ========================================== */
-    /* GAME CARD (RECTANGLE) SYSTEM */
+    /* GAME CARD SYSTEM */
     /* ========================================== */
-    
     .rectangle-container {
       width: 100%;
     }
@@ -486,7 +499,12 @@
           </div>
 
           <div class="stream">
-            <button class="new-announcement">Announce something to your class</button>
+            <button class="new-announcement">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
+              New announcement
+            </button>
 
             <div class="announcement-card">
               <div class="announcement-header">
@@ -505,22 +523,19 @@
                 </button>
               </div>
             </div>
+
             <div class="rectangle-container">
-              <div class="rectangle" data-category="mobile" onclick="window.location.href='/subwaysurfers.html'">
-                <img src="/g/assets/subway-surfers.webp" alt="subway surfers series">
+              <div class="rectangle" onclick="window.location.href='/subwaysurfers.html'">
                 <div class="game-name">subway surfers series</div>
               </div>
             </div>
 
             <div class="rectangle-container">
-              <div class="rectangle" data-category="mobile" onclick="window.location.href='/g/minecraft.html'">
-                <img src="https://gaming-cdn.com/images/news/articles/7191/cover/minecraft-gets-a-new-artwork-cover66856ea7d02ad.jpg" alt="Minecraft Launcher">
+              <div class="rectangle" onclick="window.location.href='/g/minecraft.html'">
                 <div class="game-name">minecraft launcher</div>
               </div>
             </div>
 
-              </div>
-            </div>
           </div>
         </div>
       </div>
