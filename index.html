@@ -29,17 +29,16 @@
       align-items: center;
     }
 
-    /* Snappier Logo Pop-Up */
+    /* Logo Pop-Up Animation */
     .logo-container {
       margin-bottom: 40px;
       opacity: 0;
-      transform: scale(0.6) translateY(10px);
-      /* Reduced duration from 0.8s to 0.4s */
-      animation: logoPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      transform: scale(0.5) translateY(15px);
+      animation: logoPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .logo-container img {
-      width: 110px;
+      width: 115px;
       height: auto;
       display: block;
     }
@@ -48,10 +47,10 @@
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* Fast UI Fade-In */
+    /* Loading UI Fade-In */
     .loading-ui {
       opacity: 0;
-      animation: uiFadeIn 0.3s ease-out forwards 0.2s;
+      animation: uiFadeIn 0.5s ease-out forwards 0.4s;
     }
 
     @keyframes uiFadeIn {
@@ -59,7 +58,7 @@
     }
 
     .loader-wrapper {
-      width: 240px;
+      width: 260px;
       height: 4px;
       background-color: #f1f3f4;
       border-radius: 10px;
@@ -72,25 +71,25 @@
       height: 100%;
       background: #1a73e8;
       border-radius: 10px;
-      /* Reduced from 3s to 1.2s for a faster feel */
-      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1); 
+      /* Duration is set dynamically via JavaScript */
+      transition: width 2s cubic-bezier(0.45, 0, 0.55, 1); 
     }
 
     .loading-text {
-      margin-top: 16px;
+      margin-top: 18px;
       color: #5f6368;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.2px;
     }
 
-    /* Fast Exit Animation */
+    /* Exit Animation */
     .fade-out {
-      animation: finishExit 0.3s ease-in forwards;
+      animation: finishExit 0.4s ease-in forwards;
     }
 
     @keyframes finishExit {
-      to { opacity: 0; transform: scale(1.05); filter: blur(5px); }
+      to { opacity: 0; transform: scale(1.08); filter: blur(8px); }
     }
   </style>
 </head>
@@ -105,7 +104,7 @@
       <div class="loader-wrapper">
         <div class="loader-bar" id="progress"></div>
       </div>
-      <p class="loading-text">Loading...</p>
+      <p class="loading-text">Google Classroom</p>
     </div>
   </div>
 
@@ -114,18 +113,24 @@
     const splash = document.getElementById('splash');
 
     window.onload = () => {
-      // Start almost immediately
+      // Calculate random time between 2000ms (2s) and 3500ms (3.5s)
+      const randomDuration = Math.floor(Math.random() * (3500 - 2000 + 1)) + 2000;
+      
+      // Apply the random duration to the CSS transition
+      progressBar.style.transitionDuration = randomDuration + 'ms';
+
+      // Start the bar movement after the logo pops in
       setTimeout(() => {
         progressBar.style.width = '100%';
         
-        // Match the 1.2s transition time
+        // Wait for the random duration to finish, then exit
         setTimeout(() => {
           splash.classList.add('fade-out');
           setTimeout(() => {
             window.location.href = 'classroom.html'; 
-          }, 300);
-        }, 1300); 
-      }, 300);
+          }, 400);
+        }, randomDuration + 100); 
+      }, 600);
     };
   </script>
 </body>
